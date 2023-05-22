@@ -1,0 +1,4 @@
+*.pdf
+a.out
+test.c
+.vscode
