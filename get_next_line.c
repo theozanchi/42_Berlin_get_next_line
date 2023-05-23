@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/23 16:21:48 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/23 17:18:26 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*extract_line(char **archive)
 	archive_ptr = *archive;
 	while (*archive_ptr && *archive_ptr != '\n')
 		*line_ptr++ = *archive_ptr++;
+	if (*archive_ptr == '\n')
+		*line_ptr++ = '\n';
 	*line_ptr = '\0';
 	if (linebreak_position == NULL)
 		free(*archive);
