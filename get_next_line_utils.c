@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:30:59 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/22 18:16:02 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/23 16:03:36 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,44 +39,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (output);
 }
 
-size_t	get_line_length(char *str)
+char	*ft_strchr(const char *str, int c)
 {
-	size_t	length;
-
-	length = 0;
-	while (*str && *str != '\n')
-	{
-		str++;
-		length++;
-	}
-	if (*str == '\n')
-		length++;
-	return (length);
-}
-
-char	*extract_line_and_archive(char *buffer, char *archive)
-{
-	size_t	length;
-	char	*line;
 	char	*ptr;
 
-	length = get_line_length(buffer);
-	line = malloc((length + 1) * sizeof(char));
-	if (line == NULL)
+	ptr = (char *)str;
+	while (*ptr && (unsigned char)*ptr != (unsigned char)c)
+		ptr++;
+	if ((unsigned char)*ptr == (unsigned char)c)
+		return (ptr);
+	else
 		return (NULL);
-	ptr = line;
-	while (*buffer != '\n')
-		*ptr++ = *buffer++;
-	if (*buffer == '\n')
-	{
-		*ptr = '\n';
-		buffer++;
-	}
-	*++ptr = '\0';
-	while (*buffer)
-	{
-		*archive++ = *buffer++;
-	}
-	*archive = '\0';
-	return (line);
 }

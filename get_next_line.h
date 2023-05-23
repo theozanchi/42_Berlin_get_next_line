@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:30:56 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/19 17:47:31 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/23 15:44:06 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*extract_line_and_archive(char *buffer, char *archive);
+char	*extract_line_and_archive(char *archive);
 size_t	get_line_length(char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
+char	*ft_strchr(const char *str, int c);
+char	*ft_strdup(const char *str);
 
 #endif
