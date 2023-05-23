@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/22 18:03:23 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/23 12:12:06 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*get_next_line(int fd)
 {
 	char		buffer[BUFFER_SIZE];
-	static char	archive[2 * BUFFER_SIZE];
+	static char	archive[10 * BUFFER_SIZE];
 	char		*temp;
 	ssize_t		bytes_read;
 	char		*line;
