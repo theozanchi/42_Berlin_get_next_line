@@ -6,12 +6,13 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:30:59 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/24 11:09:01 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/24 13:38:59 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/*ft_strlen returns the length of str*/
 size_t	ft_strlen(const char *str)
 {
 	size_t	length;
@@ -22,6 +23,8 @@ size_t	ft_strlen(const char *str)
 	return (length);
 }
 
+/*ft_strjoin allocates and returns a new string, which is the result of the
+concatenation of ’s1’ and ’s2’.*/
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*output;
@@ -39,6 +42,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (output);
 }
 
+/*ft_strchr locates the character c in str and returns its position*/
 char	*ft_strchr(const char *str, int c)
 {
 	char	*ptr;
@@ -52,6 +56,8 @@ char	*ft_strchr(const char *str, int c)
 		return (NULL);
 }
 
+/*ft_strlcpy copies up to size - 1 characters from the NUL-terminated string
+src to dst, NUL-terminating the result.*/
 size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	size_t	length;
