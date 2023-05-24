@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/23 17:18:26 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/24 11:29:01 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,28 @@ char	*extract_line(char **archive)
 {
 	size_t	length;
 	char	*line;
-	char	*line_ptr;
-	char	*archive_ptr;
 	char	*linebreak_position;
 
 	linebreak_position = ft_strchr(*archive, '\n');
 	if (linebreak_position == NULL)
+	{
 		length = ft_strlen(*archive);
-	else
-		length = linebreak_position - *archive + 1;
-	line = malloc((length + 1) * sizeof(char));
-	if (line == NULL)
-		return (NULL);
-	line_ptr = line;
-	archive_ptr = *archive;
-	while (*archive_ptr && *archive_ptr != '\n')
-		*line_ptr++ = *archive_ptr++;
-	if (*archive_ptr == '\n')
-		*line_ptr++ = '\n';
-	*line_ptr = '\0';
-	if (linebreak_position == NULL)
+		line = malloc((length + 1) * sizeof(char));
+		if (line == NULL)
+			return (NULL);
+		ft_strlcpy(line, *archive, length);
 		free(*archive);
+		*archive = NULL;
+	}
 	else
+	{
+		length = linebreak_position - *archive + 1;
+		line = malloc((length + 1) * sizeof(char));
+		if (line == NULL)
+			return (NULL);
+		ft_strlcpy(line, *archive, length + 1);
 		*archive = ft_strjoin(linebreak_position + 1, "");
+	}
 	return (line);
 }
 

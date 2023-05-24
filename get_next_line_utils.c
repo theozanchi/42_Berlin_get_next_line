@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:30:59 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/23 16:03:36 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/24 11:09:01 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,19 @@ char	*ft_strchr(const char *str, int c)
 		return (ptr);
 	else
 		return (NULL);
+}
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+{
+	size_t	length;
+
+	length = 0;
+	while (src[length])
+		length++;
+	if (size == 0)
+		return (length);
+	while (--size && *src)
+		*(dest++) = *(src++);
+	*dest = '\0';
+	return (length);
 }
