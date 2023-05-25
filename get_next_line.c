@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 17:55:17 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 18:27:34 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ static char	*free_archive(char *archive)
 	if (archive)
 		free(archive);
 	return (NULL);
+}
+
+static void	join_archive_and_string(char **archive, char *str)
+{
+	char	*temp;
+
+	temp = ft_strjoin(*archive, str);
+	*archive = free_archive(*archive);
+	*archive = temp;
 }
 
 /*extract_line looks the first occurence of '\n' in archive and returns all the
@@ -63,7 +72,6 @@ char	*get_next_line(int fd)
 	char		*buffer;
 	static char	*archive = NULL;
 	ssize_t		bytes_read;
-	char		*temp;
 
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
@@ -75,11 +83,7 @@ char	*get_next_line(int fd)
 		if (!archive)
 			archive = ft_strjoin("", buffer);
 		else
-		{
-			temp = ft_strjoin(archive, buffer);
-			archive = free_archive(archive);
-			archive = temp;
-		}
+			join_archive_and_string(&archive, buffer);
 		if (ft_strchr(archive, '\n'))
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
