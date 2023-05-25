@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/24 13:39:52 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 11:45:53 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*extract_line(char **archive)
 	char	*line;
 	char	*temp;
 
+	if (*archive == NULL || !**archive)
+		return (NULL);
 	if (ft_strchr(*archive, '\n') == NULL)
 	{
 		length = ft_strlen(*archive);
@@ -30,6 +32,7 @@ char	*extract_line(char **archive)
 			return (NULL);
 		ft_strlcpy(line, *archive, length);
 		free(*archive);
+		*archive = NULL;
 	}
 	else
 	{
@@ -54,24 +57,32 @@ char	*get_next_line(int fd)
 	char		buffer[BUFFER_SIZE];
 	static char	*archive = NULL;
 	ssize_t		bytes_read;
-	char		*line;
+	char		*temp;
 
-	if (archive == NULL || !*archive)
+	bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+	while (bytes_read > 0)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
-		if (bytes_read <= 0)
-		{
-			if (archive != NULL)
-				free(archive);
-			return (NULL);
-		}
 		buffer[bytes_read] = '\0';
-		archive = ft_strjoin("", buffer);
 		if (archive == NULL)
-			return (NULL);
+			archive = ft_strjoin("", buffer);
+		else
+		{
+			temp = ft_strjoin(archive, buffer);
+			free(archive);
+			archive = temp;
+		}
+		if (ft_strchr(archive, '\n'))
+			break ;
+		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 	}
-	line = extract_line(&archive);
-	if (line == NULL && !*archive)
+	if (bytes_read <= 0 && (archive == NULL || !*archive))
+	{
+		if (archive)
+		{
+			free(archive);
+			archive = NULL;
+		}
 		return (NULL);
-	return (line);
+	}
+	return (extract_line(&archive));
 }
