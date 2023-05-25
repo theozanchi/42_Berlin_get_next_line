@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 17:49:23 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 17:55:17 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,14 @@ and the line is extracted from archive by the extract_line function
 get_next_line returns the current line at each linebreak it encounters*/
 char	*get_next_line(int fd)
 {
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer;
 	static char	*archive = NULL;
 	ssize_t		bytes_read;
 	char		*temp;
 
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	while (bytes_read > 0)
 	{
@@ -81,6 +84,7 @@ char	*get_next_line(int fd)
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
+	free(buffer);
 	if (bytes_read == -1 || !archive || !*archive)
 		return (free_archive(archive));
 	return (extract_line(&archive));
