@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 16:45:19 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 17:49:23 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ returns NULL*/
 static char	*free_archive(char *archive)
 {
 	if (archive)
-	{
 		free(archive);
-		archive = NULL;
-	}
 	return (NULL);
 }
 
@@ -40,8 +37,8 @@ static char	*extract_line(char **archive)
 		line = malloc((length + 1) * sizeof(char));
 		if (!line)
 			return (NULL);
-		ft_strlcpy(line, *archive, length);
-		free_archive(*archive);
+		ft_strlcpy(line, *archive, length + 1);
+		*archive = free_archive(*archive);
 	}
 	else
 	{
@@ -51,7 +48,7 @@ static char	*extract_line(char **archive)
 			return (NULL);
 		ft_strlcpy(line, *archive, length + 1);
 		temp = ft_strjoin(ft_strchr(*archive, '\n') + 1, "");
-		free_archive(*archive);
+		*archive = free_archive(*archive);
 		*archive = temp;
 	}
 	return (line);
@@ -77,7 +74,7 @@ char	*get_next_line(int fd)
 		else
 		{
 			temp = ft_strjoin(archive, buffer);
-			free_archive(archive);
+			archive = free_archive(archive);
 			archive = temp;
 		}
 		if (ft_strchr(archive, '\n'))
