@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 11:45:53 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 11:58:39 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_next_line(int fd)
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 	}
-	if (bytes_read <= 0 && (archive == NULL || !*archive))
+	if (archive == NULL || !*archive)
 	{
 		if (archive)
 		{
