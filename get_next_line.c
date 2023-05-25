@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 16:23:58 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 16:45:19 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static char	*extract_line(char **archive)
 	char	*line;
 	char	*temp;
 
-	if (ft_strchr(*archive, '\n') == NULL)
+	if (!ft_strchr(*archive, '\n'))
 	{
 		length = ft_strlen(*archive);
 		line = malloc((length + 1) * sizeof(char));
-		if (line == NULL)
+		if (!line)
 			return (NULL);
 		ft_strlcpy(line, *archive, length);
 		free_archive(*archive);
@@ -47,7 +47,7 @@ static char	*extract_line(char **archive)
 	{
 		length = ft_strchr(*archive, '\n') - *archive + 1;
 		line = malloc((length + 1) * sizeof(char));
-		if (line == NULL)
+		if (!line)
 			return (NULL);
 		ft_strlcpy(line, *archive, length + 1);
 		temp = ft_strjoin(ft_strchr(*archive, '\n') + 1, "");
@@ -63,16 +63,16 @@ and the line is extracted from archive by the extract_line function
 get_next_line returns the current line at each linebreak it encounters*/
 char	*get_next_line(int fd)
 {
-	char		buffer[BUFFER_SIZE];
+	char		buffer[BUFFER_SIZE + 1];
 	static char	*archive = NULL;
 	ssize_t		bytes_read;
 	char		*temp;
 
-	bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
-		if (archive == NULL)
+		if (!archive)
 			archive = ft_strjoin("", buffer);
 		else
 		{
@@ -82,9 +82,9 @@ char	*get_next_line(int fd)
 		}
 		if (ft_strchr(archive, '\n'))
 			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
-	if (archive == NULL || !*archive)
+	if (bytes_read == -1 || !archive || !*archive)
 		return (free_archive(archive));
 	return (extract_line(&archive));
 }
