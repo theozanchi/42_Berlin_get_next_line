@@ -6,24 +6,34 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 11:58:39 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/25 16:23:58 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/*free_archive frees the memory allocated to archive, sets it to NULL and
+returns NULL*/
+static char	*free_archive(char *archive)
+{
+	if (archive)
+	{
+		free(archive);
+		archive = NULL;
+	}
+	return (NULL);
+}
+
 /*extract_line looks the first occurence of '\n' in archive and returns all the
 characters before it, it then updates archive by deleting all the characters
 before '\n', and '\n' itself.
 If no '\n'' is found in archive, extrcat_line returns archive and frees it*/
-char	*extract_line(char **archive)
+static char	*extract_line(char **archive)
 {
 	size_t	length;
 	char	*line;
 	char	*temp;
 
-	if (*archive == NULL || !**archive)
-		return (NULL);
 	if (ft_strchr(*archive, '\n') == NULL)
 	{
 		length = ft_strlen(*archive);
@@ -31,8 +41,7 @@ char	*extract_line(char **archive)
 		if (line == NULL)
 			return (NULL);
 		ft_strlcpy(line, *archive, length);
-		free(*archive);
-		*archive = NULL;
+		free_archive(*archive);
 	}
 	else
 	{
@@ -42,7 +51,7 @@ char	*extract_line(char **archive)
 			return (NULL);
 		ft_strlcpy(line, *archive, length + 1);
 		temp = ft_strjoin(ft_strchr(*archive, '\n') + 1, "");
-		free(*archive);
+		free_archive(*archive);
 		*archive = temp;
 	}
 	return (line);
@@ -68,7 +77,7 @@ char	*get_next_line(int fd)
 		else
 		{
 			temp = ft_strjoin(archive, buffer);
-			free(archive);
+			free_archive(archive);
 			archive = temp;
 		}
 		if (ft_strchr(archive, '\n'))
@@ -76,13 +85,6 @@ char	*get_next_line(int fd)
 		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 	}
 	if (archive == NULL || !*archive)
-	{
-		if (archive)
-		{
-			free(archive);
-			archive = NULL;
-		}
-		return (NULL);
-	}
+		return (free_archive(archive));
 	return (extract_line(&archive));
 }
