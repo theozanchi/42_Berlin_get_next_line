@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/26 12:15:11 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/26 17:11:08 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 /*free_archive frees the memory allocated to archive, sets it to NULL and
 returns NULL*/
-static char	*free_archive(char *archive)
+static char	*free_archive(char **archive)
 {
-	if (archive)
+	if (*archive)
 	{
-		free(archive);
-		archive = NULL;
+		free(*archive);
+		*archive = NULL;
 	}
 	return (NULL);
 }
 
-static void	join_archive_and_string(char **archive, char *str)
+static void	join_archive_and_buffer(char **archive, char *buffer)
 {
 	char	*temp;
 
-	temp = ft_strjoin(*archive, str);
-	*archive = free_archive(*archive);
+	temp = ft_strjoin(*archive, buffer);
+	free_archive(archive);
 	*archive = temp;
 }
 
@@ -54,11 +54,11 @@ static char	*extract_line(char **archive)
 	if (ft_strchr(*archive, '\n'))
 	{
 		temp = ft_strjoin(ft_strchr(*archive, '\n') + 1, "");
-		*archive = free_archive(*archive);
+		free_archive(archive);
 		*archive = temp;
 	}
 	else
-		*archive = free_archive(*archive);
+		free_archive(archive);
 	return (line);
 }
 
@@ -84,13 +84,13 @@ char	*get_next_line(int fd)
 		if (!archive)
 			archive = ft_strjoin("", buffer);
 		else
-			join_archive_and_string(&archive, buffer);
+			join_archive_and_buffer(&archive, buffer);
 		if (ft_strchr(archive, '\n'))
 			break ;
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
 	free(buffer);
-	if (bytes_read == -1 || !archive || !*archive)
-		return (free_archive(archive));
+	if (!archive || !*archive)
+		return (free_archive(&archive));
 	return (extract_line(&archive));
 }
