@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/26 17:11:08 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/26 17:26:17 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static char	*free_archive(char **archive)
 	return (NULL);
 }
 
+/*join_archive_and_buffer is joining archive and the buffer and properly
+freeing the previously allocated memory*/
 static void	join_archive_and_buffer(char **archive, char *buffer)
 {
 	char	*temp;
@@ -90,7 +92,7 @@ char	*get_next_line(int fd)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
 	free(buffer);
-	if (!archive || !*archive)
+	if (bytes_read == -1 || !archive || !*archive)
 		return (free_archive(&archive));
 	return (extract_line(&archive));
 }
