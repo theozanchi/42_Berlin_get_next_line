@@ -6,7 +6,7 @@
 /*   By: tzanchi <tzanchi@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:31:02 by tzanchi           #+#    #+#             */
-/*   Updated: 2023/05/25 18:27:34 by tzanchi          ###   ########.fr       */
+/*   Updated: 2023/05/26 12:07:41 by tzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ returns NULL*/
 static char	*free_archive(char *archive)
 {
 	if (archive)
+	{
 		free(archive);
+		archive = NULL;
+	}
 	return (NULL);
 }
 
@@ -73,6 +76,8 @@ char	*get_next_line(int fd)
 	static char	*archive = NULL;
 	ssize_t		bytes_read;
 
+	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX - 1)
+		return (NULL);
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
